@@ -30,11 +30,13 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    justify-content: flex-start; /* Align items at the top */
 }
 
 .sidebar h2 {
-    font-size: 2rem; /* Increased font size for headers */
+    font-size: 2rem;
     margin-bottom: 10px;
+    margin-top: 0; /* Remove extra spacing */
 }
 
 .sidebar ul {
@@ -89,6 +91,7 @@ header {
     align-items: center;
     border-bottom: 2px solid #ddd;
     padding-bottom: 10px;
+    margin-top: 0; /* Align with sidebar */
 }
 
 header h1 {
