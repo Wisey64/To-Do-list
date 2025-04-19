@@ -1,3 +1,4 @@
+import './styles.css';
 //constructor for the to-do list
 class TodoList {
     constructor(title, description,date, priority, isCompleted) {
