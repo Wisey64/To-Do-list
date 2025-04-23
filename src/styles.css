@@ -163,3 +163,87 @@ header p {
 .delete-btn:hover {
     color: #e74c3c;
 }
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-align: center;
+    color: #333;
+}
+
+.modal label {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.modal input,
+.modal select,
+.modal textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.modal textarea {
+    height: 100px;
+    resize: none;
+}
+
+.sbtn {
+    background: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+    width: 100%;
+}
+
+.sbtn:hover {
+    background: #2980b9;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    background: none; /* Remove background */
+    color: #e74c3c; /* Red color for the "X" */
+    border: none; /* Remove border */
+    font-size: 2rem; /* Increase font size for visibility */
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.modal-close-btn:hover {
+    color: #c0392b; 
+}
+
+/* Backdrop for Modal */
+.modal::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
