@@ -1,6 +1,6 @@
 import './styles.css';
 import { main } from './sidebar.js'; //importing the main content
-
+const content = document.querySelector('.todo-list')
 const todos = []; //array to store all todos
 const addbtn = document.querySelector('.add-todo-btn');
 //modal for the add button
@@ -21,29 +21,62 @@ class TodoList {
             const todoItem = document.createElement('div');
             todoItem.classList.add('todo-item');
             todoItem.innerHTML = `
-                <h3>${this.title}</h3>
+                <div class="todo-header" style="border-top: 5px solid ${this.getPriorityColor()}">
+                    <h3>${this.title}</h3>
+                </div>
                 <p>${this.description}</p>
                 <p>${this.date}</p>
-                <p>${this.priority}</p>
-                <button class="toggle-completion">${this.isCompleted ? 'Undo' : 'Complete'}</button>
+                <div class="todo-footer">
+                    <label>
+                        <input type="checkbox" class="complete-checkbox" ${this.isCompleted ? 'checked' : ''}>
+                        Complete
+                    </label>
+                </div>
+                <div class="todo-actions">
+                        <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                        <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                    </div>
             `;
             return todoItem;
         }
+
+        // Function to get the color based on priority
+        this.getPriorityColor = function () {
+            if (this.priority === 'High') return 'red';
+            if (this.priority === 'Medium') return 'yellow';
+            if (this.priority === 'Low') return 'green';
+        };
+
+
         // Add the new todo to the todos array
         todos.push(this);
         // Render the todo item
         const todoItem = render.call(this);
         // Append the todo item to the main content
-        main.appendChild(todoItem);
+        content.appendChild(todoItem);
         // Add event listener to the toggle completion button
-        const toggleButton = todoItem.querySelector('.toggle-completion');
-        toggleButton.addEventListener('click', () => {
-            this.toggleCompletion();
-            toggleButton.textContent = this.isCompleted ? 'Undo' : 'Complete';
-            todoItem.classList.toggle('completed', this.isCompleted);
+
+        //event listener for the delete button
+        const deleteButton = todoItem.querySelector('.delete-btn');
+        deleteButton.addEventListener('click', () => {
+            todoItem.remove();
+            const index = todos.indexOf(this);
+            if (index > -1) todos.splice(index, 1);
         });
 
-        
+
+        // Event listener for the edit button
+        const editButton = todoItem.querySelector('.edit-btn');
+        editButton.addEventListener('click', () => {
+            alert('Edit functionality not implemented yet!');
+        });
+
+        // Event listener for the complete checkbox
+        const completeCheckbox = todoItem.querySelector('.complete-checkbox');
+        completeCheckbox.addEventListener('change', () => {
+            this.isCompleted = completeCheckbox.checked;
+            todoItem.classList.toggle('completed', this.isCompleted);
+        });
 
         
 
@@ -51,7 +84,7 @@ class TodoList {
 
         
 
-    }
+}
 
 
     // to toggle the completion status of the todo
@@ -69,7 +102,6 @@ class TodoList {
 
 //event listener for the add button to create a 
 // modal for inputing the data for the todo
-// Event listener for the "Add To-Do" button
 addbtn.addEventListener('click', function () {
     modal.innerHTML = `
         <button class="modal-close-btn">&times;</button>
