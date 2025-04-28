@@ -8,6 +8,8 @@ const modal = document.createElement('dialog');
 modal.classList.add('modal');
 
 
+
+
 //constructor for the to-do list
 class TodoList {
     constructor(title, description,date, priority, isCompleted) {
@@ -54,7 +56,7 @@ class TodoList {
         const todoItem = render.call(this);
         // Append the todo item to the main content
         content.appendChild(todoItem);
-        // Add event listener to the toggle completion button
+        
 
         //event listener for the delete button
         const deleteButton = todoItem.querySelector('.delete-btn');
@@ -64,12 +66,103 @@ class TodoList {
             if (index > -1) todos.splice(index, 1);
         });
 
-
-        // Event listener for the edit button
-        const editButton = todoItem.querySelector('.edit-btn');
-        editButton.addEventListener('click', () => {
-            alert('Edit functionality not implemented yet!');
+           // Function to get the index of an element in the array
+    function getIndex(array, element) {
+        return array.indexOf(element);
+    }
+    
+    // Function to delete an element by index in the array
+    function deleteByIndex(array, index) {
+        if (index > -1 && index < array.length) {
+            array.splice(index, 1); // Remove 1 element at the given index
+        }
+    }
+    
+    // Edit button logic
+    const editButton = todoItem.querySelector('.edit-btn');
+    editButton.addEventListener('click', () => {
+        // Create the modal for editing
+        modal.innerHTML = `
+            <button class="modal-close-btn">&times;</button>
+            <form method="dialog">
+                <h2>Edit Todo</h2>
+                <label for="title">Title:</label>
+                <input type="text" id="title" class="ttl" value="${this.title}" required>
+                <label for="description">Description:</label>
+                <textarea id="description" class="desc" required>${this.description}</textarea>
+                <label for="date">Date:</label>
+                <input type="date" id="date" class="dat" value="${this.date}" required>
+                <label for="priority">Priority:</label>
+                <select id="priority" class="prio" required>
+                    <option value="High" ${this.priority === 'High' ? 'selected' : ''}>High</option>
+                    <option value="Medium" ${this.priority === 'Medium' ? 'selected' : ''}>Medium</option>
+                    <option value="Low" ${this.priority === 'Low' ? 'selected' : ''}>Low</option>
+                </select>
+                <button class="cbtn" type="button">Confirm</button>
+            </form>
+        `;
+    
+        main.appendChild(modal);
+        modal.showModal();
+    
+        // Close the modal when the close button is clicked
+        const closeButton = modal.querySelector('.modal-close-btn');
+        closeButton.addEventListener('click', () => {
+            modal.close();
+            setTimeout(() => {
+                modal.remove();
+            }, 10);
         });
+    
+        // Handle the "Confirm" button click
+        const confirmButton = modal.querySelector('.cbtn');
+        confirmButton.addEventListener('click', () => {
+            // Log the array before editing
+            console.log("Before Edit:", todos);
+    
+            // Get updated input values
+            const titlevalue = document.getElementById('title').value;
+            const descriptionvalue = document.getElementById('description').value;
+            const datevalue = document.getElementById('date').value;
+            const priorityvalue = document.getElementById('priority').value;
+    
+            // Validate inputs
+            if (!titlevalue || !descriptionvalue || !datevalue || !priorityvalue) {
+                alert("Please fill in all fields.");
+                return;
+            }
+    
+            // Get the index of the current to-do in the array
+            const index = getIndex(todos, this);
+    
+            // Delete the old unedited to-do from the array
+            deleteByIndex(todos, index);
+    
+            // Update the to-do object
+            this.title = titlevalue;
+            this.description = descriptionvalue;
+            this.date = datevalue;
+            this.priority = priorityvalue;
+    
+            // Update the DOM
+            todoItem.querySelector('h3').textContent = this.title;
+            todoItem.querySelector('p:nth-of-type(1)').textContent = this.description;
+            todoItem.querySelector('p:nth-of-type(2)').textContent = this.date;
+            todoItem.querySelector('.todo-header').style.borderTop = `5px solid ${this.getPriorityColor()}`;
+    
+            // Add the updated to-do back to the array
+            todos.push(this);
+    
+            // Log the array after editing
+            console.log("After Edit:", todos);
+    
+            // Close and remove the modal
+            setTimeout(() => {
+                modal.close();
+                modal.remove();
+            }, 10);
+        });
+    });
 
         // Event listener for the complete checkbox
         const completeCheckbox = todoItem.querySelector('.complete-checkbox');
