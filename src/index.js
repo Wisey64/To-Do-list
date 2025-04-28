@@ -1,87 +1,85 @@
 import './styles.css';
-import { main } from './sidebar.js'; //importing the main content
-const content = document.querySelector('.todo-list')
-const todos = []; //array to store all todos
+import { main } from './sidebar.js'; // Importing the main content
+
+const content = document.querySelector('.todo-list');
+const todos = []; // Array to store all todos
 const addbtn = document.querySelector('.add-todo-btn');
-//modal for the add button
+
+// Modal for the add button
 const modal = document.createElement('dialog');
 modal.classList.add('modal');
 
+// Centralized rendering function
+function renderAllTodos() {
+    // Clear the current content
+    content.innerHTML = '';
 
+    // Render all to-dos from the array
+    todos.forEach(todo => todo.render());
+}
 
-
-//constructor for the to-do list
+// Constructor for the to-do list
 class TodoList {
-    constructor(title, description,date, priority, isCompleted) {
+    constructor(title, description, date, priority, isCompleted) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.priority = priority;
         this.isCompleted = isCompleted;
 
-        function render() {
-            const todoItem = document.createElement('div');
-            todoItem.classList.add('todo-item');
-            todoItem.innerHTML = `
-                <div class="todo-header" style="border-top: 5px solid ${this.getPriorityColor()}">
-                    <h3>${this.title}</h3>
-                </div>
-                <p>${this.description}</p>
-                <p>${this.date}</p>
-                <div class="todo-footer">
-                    <label>
-                        <input type="checkbox" class="complete-checkbox" ${this.isCompleted ? 'checked' : ''}>
-                        Complete
-                    </label>
-                </div>
-                <div class="todo-actions">
-                        <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                        <button class="delete-btn"><i class="fas fa-trash"></i></button>
-                    </div>
-            `;
-            return todoItem;
-        }
-
-        // Function to get the color based on priority
-        this.getPriorityColor = function () {
-            if (this.priority === 'High') return 'red';
-            if (this.priority === 'Medium') return 'yellow';
-            if (this.priority === 'Low') return 'green';
-        };
-
-
-        // Add the new todo to the todos array
+        // Add the new to-do to the todos array
         todos.push(this);
-        // Render the todo item
-        const todoItem = render.call(this);
-        // Append the todo item to the main content
+
+        // Render the to-do
+        this.render();
+    }
+
+    // Method to render the to-do
+    render() {
+        const todoItem = document.createElement('div');
+        todoItem.classList.add('todo-item');
+        todoItem.innerHTML = `
+            <div class="todo-header" style="border-top: 5px solid ${this.getPriorityColor()}">
+                <h3>${this.title}</h3>
+            </div>
+            <p>${this.description}</p>
+            <p>${this.date}</p>
+            <div class="todo-footer">
+                <label>
+                    <input type="checkbox" class="complete-checkbox" ${this.isCompleted ? 'checked' : ''}>
+                    Complete
+                </label>
+            </div>
+            <div class="todo-actions">
+                <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                <button class="delete-btn"><i class="fas fa-trash"></i></button>
+            </div>
+        `;
         content.appendChild(todoItem);
-        
 
-        //event listener for the delete button
+        // Add event listeners for delete and edit
         const deleteButton = todoItem.querySelector('.delete-btn');
-        deleteButton.addEventListener('click', () => {
-            todoItem.remove();
-            const index = todos.indexOf(this);
-            if (index > -1) todos.splice(index, 1);
-        });
+        deleteButton.addEventListener('click', () => this.delete(todoItem));
 
-           // Function to get the index of an element in the array
-    function getIndex(array, element) {
-        return array.indexOf(element);
+        const editButton = todoItem.querySelector('.edit-btn');
+        editButton.addEventListener('click', () => this.edit(todoItem));
+
+        const completeCheckbox = todoItem.querySelector('.complete-checkbox');
+        completeCheckbox.addEventListener('change', () => {
+            this.isCompleted = completeCheckbox.checked;
+            todoItem.classList.toggle('completed', this.isCompleted);
+        });
     }
-    
-    // Function to delete an element by index in the array
-    function deleteByIndex(array, index) {
-        if (index > -1 && index < array.length) {
-            array.splice(index, 1); // Remove 1 element at the given index
-        }
+
+    // Method to delete the to-do
+    delete(todoItem) {
+        todoItem.remove();
+        const index = todos.indexOf(this);
+        if (index > -1) todos.splice(index, 1);
     }
-    
-    // Edit button logic
-    const editButton = todoItem.querySelector('.edit-btn');
-    editButton.addEventListener('click', () => {
-        // Create the modal for editing
+
+    // Method to edit the to-do
+    edit(todoItem) {
         modal.innerHTML = `
             <button class="modal-close-btn">&times;</button>
             <form method="dialog">
@@ -101,11 +99,10 @@ class TodoList {
                 <button class="cbtn" type="button">Confirm</button>
             </form>
         `;
-    
+
         main.appendChild(modal);
         modal.showModal();
-    
-        // Close the modal when the close button is clicked
+
         const closeButton = modal.querySelector('.modal-close-btn');
         closeButton.addEventListener('click', () => {
             modal.close();
@@ -113,88 +110,45 @@ class TodoList {
                 modal.remove();
             }, 10);
         });
-    
-        // Handle the "Confirm" button click
+
         const confirmButton = modal.querySelector('.cbtn');
         confirmButton.addEventListener('click', () => {
-            // Log the array before editing
-            console.log("Before Edit:", todos);
-    
-            // Get updated input values
             const titlevalue = document.getElementById('title').value;
             const descriptionvalue = document.getElementById('description').value;
             const datevalue = document.getElementById('date').value;
             const priorityvalue = document.getElementById('priority').value;
-    
-            // Validate inputs
+
             if (!titlevalue || !descriptionvalue || !datevalue || !priorityvalue) {
                 alert("Please fill in all fields.");
                 return;
             }
-    
-            // Get the index of the current to-do in the array
-            const index = getIndex(todos, this);
-    
-            // Delete the old unedited to-do from the array
-            deleteByIndex(todos, index);
-    
-            // Update the to-do object
+
             this.title = titlevalue;
             this.description = descriptionvalue;
             this.date = datevalue;
             this.priority = priorityvalue;
-    
-            // Update the DOM
+
             todoItem.querySelector('h3').textContent = this.title;
             todoItem.querySelector('p:nth-of-type(1)').textContent = this.description;
             todoItem.querySelector('p:nth-of-type(2)').textContent = this.date;
             todoItem.querySelector('.todo-header').style.borderTop = `5px solid ${this.getPriorityColor()}`;
-    
-            // Add the updated to-do back to the array
-            todos.push(this);
-    
-            // Log the array after editing
-            console.log("After Edit:", todos);
-    
-            // Close and remove the modal
+
+            modal.close();
             setTimeout(() => {
-                modal.close();
                 modal.remove();
             }, 10);
         });
-    });
+    }
 
-        // Event listener for the complete checkbox
-        const completeCheckbox = todoItem.querySelector('.complete-checkbox');
-        completeCheckbox.addEventListener('change', () => {
-            this.isCompleted = completeCheckbox.checked;
-            todoItem.classList.toggle('completed', this.isCompleted);
-        });
-
-        
-
-    
-
-        
-
+    // Method to get the color based on priority
+    getPriorityColor() {
+        if (this.priority === 'High') return 'red';
+        if (this.priority === 'Medium') return 'yellow';
+        if (this.priority === 'Low') return 'green';
+    }
 }
 
-
-    // to toggle the completion status of the todo
-    toggleCompletion() {
-        this.isCompleted = !this.isCompleted;
-    }
-    
-    }
-
-    
-
-
-
-
-
-//event listener for the add button to create a 
-// modal for inputing the data for the todo
+// Event listener for the "Add Todo" button
 addbtn.addEventListener('click', function () {
     modal.innerHTML = `
         <button class="modal-close-btn">&times;</button>
@@ -219,50 +173,37 @@ addbtn.addEventListener('click', function () {
     main.appendChild(modal);
     modal.showModal();
 
-    // Close the modal when the close button is clicked
     const closeButton = modal.querySelector('.modal-close-btn');
     closeButton.addEventListener('click', () => {
         modal.close();
         setTimeout(() => {
             modal.remove();
-        }, 10); // Delay before removing the modal
+        }, 10);
     });
-});
 
-// Event listener for submitting the form (added only once)
-modal.addEventListener('click', function (s) {
-    if (s.target.classList.contains('sbtn')) {
-        s.preventDefault();
+    const confirmButton = modal.querySelector('.sbtn');
+    confirmButton.addEventListener('click', (e) => {
+        e.preventDefault();
 
-        // Get input values
         const titlevalue = document.getElementById('title').value;
         const descriptionvalue = document.getElementById('description').value;
         const datevalue = document.getElementById('date').value;
         const priorityvalue = document.getElementById('priority').value;
 
-        // Validate inputs
         if (!titlevalue || !descriptionvalue || !datevalue || !priorityvalue) {
             alert("Please fill in all fields.");
             return;
         }
 
-        // Create the to-do
         const isCompleted = false;
-        const todo = new TodoList(titlevalue, descriptionvalue, datevalue, priorityvalue, isCompleted);
-        
+        new TodoList(titlevalue, descriptionvalue, datevalue, priorityvalue, isCompleted);
 
-        // Close the modal after a delay
         setTimeout(() => {
             modal.close();
             modal.remove();
-        }, 10); // 10ms delay
-    }
+        }, 10);
+    });
 });
-    
 
-
-
-
-    export default TodoList;
-
-
+export { renderAllTodos };
+export default TodoList;

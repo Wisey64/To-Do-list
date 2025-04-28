@@ -298,6 +298,22 @@ header p {
     background: #2980b9;
 }
 
+.cbtn {
+    background: #27ae60; 
+    color: #fff; 
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+    width: 100%;
+}
+
+.cbtn:hover {
+    background: #219150; 
+}
+
 .modal-close-btn {
     position: absolute;
     top: 0px;
