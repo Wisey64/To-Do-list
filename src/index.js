@@ -205,5 +205,10 @@ addbtn.addEventListener('click', function () {
     });
 });
 
-export { renderAllTodos };
+
+const todo1 = new TodoList("Todo 1", "Description 1", "2023-10-01", "High", false);
+const todo2 = new TodoList("Todo 2", "Description 2", "2023-10-02", "Medium", false);
+const todo3 = new TodoList("Todo 3", "Description 3", "2025-4-28", "Low", false);
+
+export { renderAllTodos, todos };
 export default TodoList;

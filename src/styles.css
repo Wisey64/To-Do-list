@@ -231,7 +231,7 @@ header p {
 
 .todo-item.completed {
     background: #f4f4f4;
-    text-decoration: line-through;
+    
     color: #888;
 }
 
