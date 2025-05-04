@@ -346,12 +346,15 @@ header p {
 }
 
 .project-item {
+    display: flex;
+    justify-content: space-between;
     padding: 10px;
     border-radius: 4px;
     background: #2c3e50; /* Light gray background */
     color: #eee; /* Dark text */
     cursor: pointer;
     transition: background 0.3s, color 0.3s;
+    font-size: 1.2rem; /* Increased font size for project items */
 }
 
 .project-item:hover {
@@ -391,3 +394,33 @@ header p {
 .delete-project-btn:hover {
     background: #c0392b;
 }
+
+.confirm-delete-btn {
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    transition: background 0.3s;
+}
+.confirm-delete-btn:hover {
+    background: #c0392b;
+}
+.cancel-delete-btn {
+    background: #3498db;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    transition: background 0.3s;
+}
+.cancel-delete-btn:hover {
+    background: #2980b9;
+}
+/* Responsive Styles */
