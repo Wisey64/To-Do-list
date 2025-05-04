@@ -1,5 +1,6 @@
 import './styles.css';
 import { main } from './sidebar.js'; // Importing the main content
+import { activeProject } from './sidebar.js';
 
 const content = document.querySelector('.todo-list');
 const todos = []; // Array to store all todos
@@ -20,12 +21,13 @@ function renderAllTodos() {
 
 // Constructor for the to-do list
 class TodoList {
-    constructor(title, description, date, priority, isCompleted) {
+    constructor(title, description, date, priority, isCompleted, project = null) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.priority = priority;
         this.isCompleted = isCompleted;
+        this.project = project; // Associate the to-do with the active project
 
         // Add the new to-do to the todos array
         todos.push(this);
@@ -150,6 +152,14 @@ class TodoList {
 
 // Event listener for the "Add Todo" button
 addbtn.addEventListener('click', function () {
+
+    if (!activeProject) {
+        alert("Please select a project first!");
+        return;
+    }
+
+
+
     modal.innerHTML = `
         <button class="modal-close-btn">&times;</button>
         <form method="dialog">
@@ -196,19 +206,27 @@ addbtn.addEventListener('click', function () {
         }
 
         const isCompleted = false;
-        new TodoList(titlevalue, descriptionvalue, datevalue, priorityvalue, isCompleted);
+        new TodoList(titlevalue, descriptionvalue, datevalue, priorityvalue, isCompleted, activeProject);
+
+        // Remove the instructions div if it exists
+        const instructionsDiv = document.querySelector('.instructions');
+        if (instructionsDiv) {
+            instructionsDiv.remove();
+        }
 
         setTimeout(() => {
             modal.close();
             modal.remove();
+            console.log("Confirm button clicked");
+console.log("Modal closing...");
         }, 10);
     });
 });
 
 
-const todo1 = new TodoList("Todo 1", "Description 1", "2023-10-01", "High", false);
-const todo2 = new TodoList("Todo 2", "Description 2", "2023-10-02", "Medium", false);
-const todo3 = new TodoList("Todo 3", "Description 3", "2025-4-28", "Low", false);
+//const todo1 = new TodoList("Todo 1", "Description 1", "2023-10-01", "High", false);
+//const todo2 = new TodoList("Todo 2", "Description 2", "2023-10-02", "Medium", false);
+//const todo3 = new TodoList("Todo 3", "Description 3", "2025-4-28", "Low", false);
 
 export { renderAllTodos, todos };
 export default TodoList;

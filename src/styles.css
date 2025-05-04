@@ -126,6 +126,8 @@ header p {
 /* To-Do List */
 .todo-list {
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     gap: 15px;
 }
@@ -333,4 +335,59 @@ header p {
 /* Backdrop for Modal */
 .modal::backdrop {
     background: rgba(0, 0, 0, 0.5);
+}
+
+
+.project-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.project-item {
+    padding: 10px;
+    border-radius: 4px;
+    background: #2c3e50; /* Light gray background */
+    color: #eee; /* Dark text */
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+}
+
+.project-item:hover {
+    background: #293847; /* Dark background for active project */
+    color: #fff; /* White text for active project */
+}
+
+.project-item.active {
+    background: #34495e; /* Dark background for active project */
+    color: #fff; /* White text for active project */
+}
+
+.instructions {
+    text-align: center;
+    color: #555;
+    font-size: 1.2rem;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Full height of the content area */
+}
+
+.delete-project-btn {
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    transition: background 0.3s;
+}
+
+.delete-project-btn:hover {
+    background: #c0392b;
 }
