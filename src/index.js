@@ -38,25 +38,28 @@ class TodoList {
 
     // Method to render the to-do
     render() {
-        const todoItem = document.createElement('div');
+        const todoItem = document.createElement('li'); // Use <li> for list items
         todoItem.classList.add('todo-item');
+        if (this.isCompleted) {
+            todoItem.classList.add('completed');
+        }
+
         todoItem.innerHTML = `
-            <div class="todo-header" style="border-top: 5px solid ${this.getPriorityColor()}">
+            <div class="todo-header">
                 <h3>${this.title}</h3>
+                <p>${this.description}</p>
+                <p>${this.date}</p>
             </div>
-            <p>${this.description}</p>
-            <p>${this.date}</p>
-            <div class="todo-footer">
+            <div class="todo-actions">
                 <label>
                     <input type="checkbox" class="complete-checkbox" ${this.isCompleted ? 'checked' : ''}>
                     Complete
                 </label>
-            </div>
-            <div class="todo-actions">
                 <button class="edit-btn"><i class="fas fa-edit"></i></button>
                 <button class="delete-btn"><i class="fas fa-trash"></i></button>
             </div>
         `;
+
         content.appendChild(todoItem);
 
         // Add event listeners for delete and edit
@@ -67,10 +70,12 @@ class TodoList {
         editButton.addEventListener('click', () => this.edit(todoItem));
 
         const completeCheckbox = todoItem.querySelector('.complete-checkbox');
-        completeCheckbox.addEventListener('change', () => {
-            this.isCompleted = completeCheckbox.checked;
-            todoItem.classList.toggle('completed', this.isCompleted);
-        });
+        if (completeCheckbox) {
+            completeCheckbox.addEventListener('change', () => {
+                this.isCompleted = completeCheckbox.checked;
+                todoItem.classList.toggle('completed', this.isCompleted);
+            });
+        }
     }
 
     // Method to delete the to-do
@@ -133,7 +138,6 @@ class TodoList {
             todoItem.querySelector('h3').textContent = this.title;
             todoItem.querySelector('p:nth-of-type(1)').textContent = this.description;
             todoItem.querySelector('p:nth-of-type(2)').textContent = this.date;
-            todoItem.querySelector('.todo-header').style.borderTop = `5px solid ${this.getPriorityColor()}`;
 
             modal.close();
             setTimeout(() => {

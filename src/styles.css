@@ -126,65 +126,56 @@ header p {
 /* To-Do List */
 .todo-list {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
+    flex-direction: column; /* Arrange items vertically */
+    gap: 10px; /* Add spacing between items */
+    width: 100%; /* Full width of the container */
+    padding: 0;
+    margin: 0;
+    list-style: none; /* Remove default list styles */
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 /* To-Do Item Styles */
 .todo-item {
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.356);
-    padding: 15px;
-    
-    transition: transform 0.2s, background-color 0.3s;
-    width: 400px;
-    height: 250px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden; /* Prevent content from overflowing */
-    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
-    word-wrap: break-word; /* Break long words to fit within the card */
-
-    
+    justify-content: space-between; /* Align content horizontally */
+    align-items: center; /* Center items vertically */
+    padding: 10px 15px;
+    background: #f9f9f9; /* Light background for list items */
+    border: 1px solid #ddd; /* Add a border for separation */
+    border-radius: 4px; /* Slight rounding for a clean look */
+    transition: background 0.3s;
+    font-size: 1rem; /* Adjust font size */
+    width: 97.5%; /* Full width of the container */
 }
 
 .todo-item:hover {
-    transform: translateY(-5px);
+    background: #f1f1f1; /* Slightly darker background on hover */
 }
 
+/* To-Do Header */
 .todo-header {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 400px;
-
+    flex-direction: column;
+    gap: 5px;
 }
 
 .todo-header h3 {
-    max-height: 2.5rem; /* Limit height for the title */
-    overflow:auto;
-    
-    white-space: nowrap; /* Prevent wrapping */
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
 }
 
-.todo-item p {
-    
-    max-height: 4rem; /* Limit height for the description */
-    overflow:auto;
-    text-overflow: ellipsis;
-    white-space: normal; /* Allow wrapping for paragraphs */
+.todo-header p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
 }
 
-
+/* To-Do Actions */
 .todo-actions {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
+    gap: 10px; /* Space between buttons */
 }
 
 .todo-actions button {
@@ -192,16 +183,13 @@ header p {
     border-radius: 4px;
     padding: 5px 10px;
     cursor: pointer;
-    font-size: 1.5rem;
+    font-size: 0.9rem;
     color: #fff;
-    display: flex;
     transition: background 0.3s;
-    
 }
 
 .edit-btn {
     background: #3498db;
-    margin-right: 5px;
 }
 
 .edit-btn:hover {
@@ -216,25 +204,11 @@ header p {
     background: #c0392b;
 }
 
-.todo-footer {
-    margin-top: 10px;
-}
-
-.todo-footer label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.complete-checkbox {
-    transform: scale(1.2);
-    cursor: pointer;
-}
-
+/* Completed To-Do */
 .todo-item.completed {
-    background: #f4f4f4;
+    background: #e8f5e9; /* Light green background for completed items */
+    color: #555;
     
-    color: #888;
 }
 
 /* Modal Styles */
